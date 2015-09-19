@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
     @Override
     public void setSharedIntent(String text) {
         Intent sharedIntent = Utility.createSharedIntent(text);
-        if(null != sharedIntent) {
+        if(null != sharedIntent && null != mShareActionProvider ) {
             mShareActionProvider.setShareIntent( sharedIntent );
         }else{
             Log.d(LOG_TAG, "sharedIntent is null" + sharedIntent );
