@@ -9,6 +9,7 @@ import java.util.HashSet;
 
 /**
  * Created by Antonio on 15-08-21.
+ * Test movie database
  */
 public class TestDb extends AndroidTestCase {
 
@@ -121,6 +122,5 @@ public class TestDb extends AndroidTestCase {
 
         db.close();
     }
-
 
 }

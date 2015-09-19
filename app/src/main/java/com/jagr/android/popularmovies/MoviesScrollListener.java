@@ -17,9 +17,14 @@ public class MoviesScrollListener implements AbsListView.OnScrollListener {
 
     private boolean mIsLoading = false;
     private int mPreviousTotal = 0;
+    private int scrollState;
 
     private Context mContext;
     private OnMoviesScrollListener mListener;
+
+    private int mCurrentFirstVisibleItem = 0;
+    private int mCurrentVisibleItemCount = 0;
+    private int mCurrentTotalItemCount = 0;
 
 
     public MoviesScrollListener(Context context, OnMoviesScrollListener listener){
@@ -29,28 +34,36 @@ public class MoviesScrollListener implements AbsListView.OnScrollListener {
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
+        this.scrollState = scrollState;
+        this.isScrollCompleted();
+    }
+
+
+    private void isScrollCompleted(  ) {
+        if (this.mCurrentVisibleItemCount > 0 && this.scrollState == SCROLL_STATE_IDLE) {
+
+            if (mIsLoading) {
+                if (this.mCurrentTotalItemCount > mPreviousTotal) {
+                    mIsLoading = false;
+                    mPreviousTotal = this.mCurrentTotalItemCount;
+                }
+            } else if (mPreviousTotal > this.mCurrentTotalItemCount) {
+                mPreviousTotal = this.mCurrentTotalItemCount;
+            }
+            if (!mIsLoading && (this.mCurrentFirstVisibleItem + this.mCurrentVisibleItemCount == this.mCurrentTotalItemCount)
+                    && this.mCurrentTotalItemCount > 0 && this.mCurrentFirstVisibleItem > 0 && (mPreviousTotal <= this.mCurrentTotalItemCount)
+                    && getCurrentPage() <= getTotalPages()) {
+                mIsLoading = true;
+                mListener.onMoviesScrollReachedEnd(getCurrentPage() + 1);
+            }
+        }
     }
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        if (mIsLoading) {
-            if (totalItemCount > mPreviousTotal) {
-                mIsLoading = false;
-                mPreviousTotal = totalItemCount;
-            }
-        }else if( mPreviousTotal > totalItemCount ){
-            mPreviousTotal = totalItemCount;
-        }
-
-
-        if (!mIsLoading && (firstVisibleItem + visibleItemCount == totalItemCount)
-            && totalItemCount > 0 && firstVisibleItem > 0 && (mPreviousTotal <= totalItemCount)
-            && getCurrentPage() <= getTotalPages() ) {
-
-            //Calling a callback function
-            mListener.onMoviesScrollReachedEnd( getCurrentPage() + 1 );
-            mIsLoading = true;
-        }
+        this.mCurrentFirstVisibleItem = firstVisibleItem;
+        this.mCurrentVisibleItemCount = visibleItemCount;
+        this.mCurrentTotalItemCount = totalItemCount;
     }
 
     private int getCurrentPage(){

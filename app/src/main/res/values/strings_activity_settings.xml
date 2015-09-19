@@ -14,6 +14,7 @@
     <array name="pref_titles_movies_sort_order">
         <item>most popular</item>
         <item>highest-rated</item>
+        <item>favorites</item>
     </array>
 
 
@@ -21,9 +22,12 @@
     <array name="pref_values_movies_sort_order" translatable = "false">
         <item>popularity.desc</item>
         <item>vote_average.desc</item>
+        <item>favorites</item>
     </array>
 
     <string name="pref_values_movies_sort_order_default" translatable="false">vote_average.desc</string>
+
+    <string name="pref_values_movies_sort_order_favorites" translatable="false">favorites</string>
 
     <string name="movies_page" translatable="false">page</string>
 

@@ -1,13 +1,8 @@
 package com.jagr.android.popularmovies.data;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.jagr.android.popularmovies.ImageViewArrayAdapter;
@@ -84,23 +79,11 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ParseResult> {
      *               the execution of the method DataParser.parse
      */
     @Override
-    protected void onPostExecute(ParseResult result) {
-
+    protected void onPostExecute(ParseResult result){
         if( result.getStatus() == ParseResult.OK ) {
-
             if(  null != result.getDetail() && !result.getDetail().isEmpty() ){
-
-                if( result.getPage() == MovieContract.DEFAULT_PAGE ){
-                    mContext.getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI,null,null);
-                }
-                mContext.getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI,
-                        result.getDetail().toArray(new ContentValues[result.getDetail().size()]));
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
-
-                editor.putInt(mContext.getString(R.string.movies_page), result.getPage());
-                editor.putInt(mContext.getString(R.string.movies_total_pages), result.getTotalPages());
-                editor.commit();
-
+                Utility.setCurrentPage( mContext, result.getPage(), result.getTotalPages() );
+                mMovieAdapter.addAll( result.getDetail() );
             }
         }else{
             switch( result.getStatus() ){
@@ -114,28 +97,5 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ParseResult> {
 
             }
         }
-
-        //loading DB data in mMovieAdapter
-        //TODO this functionality is gonna be modified in future implementations.
-        mMovieAdapter.clear();
-        Cursor movieCursor = mContext.getContentResolver().query(
-                MovieContract.MovieEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                null
-        );
-        if ( movieCursor.moveToFirst() ) {
-            do {
-                ContentValues cv = new ContentValues();
-                DatabaseUtils.cursorRowToContentValues(movieCursor, cv);
-                mMovieAdapter.add(cv);
-            } while (movieCursor.moveToNext());
-        }
-
-        movieCursor.close();
-
-        mMovieAdapter.notifyDataSetChanged();
     }
-
 }

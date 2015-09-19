@@ -50,8 +50,8 @@ public class MovieValues {
      * @param cv
      * @return
      */
-    public static long getMovieReleaseDate( ContentValues cv ){
-        return cv.getAsLong(MovieContract.MovieEntry.COLUMN_RELEASE_DATE);
+    public static String getMovieReleaseDate( ContentValues cv ){
+        return cv.getAsString(MovieContract.MovieEntry.COLUMN_RELEASE_DATE);
     }
 
 

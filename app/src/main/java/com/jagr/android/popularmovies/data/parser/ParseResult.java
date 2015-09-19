@@ -1,6 +1,7 @@
 package com.jagr.android.popularmovies.data.parser;
 
 import android.content.ContentValues;
+import android.os.Parcelable;
 import android.support.annotation.IntDef;
 
 import java.lang.annotation.Retention;
@@ -30,7 +31,7 @@ public class ParseResult {
 
     private @ParsingStatus int status;
     private ContentValues header;
-    private List<ContentValues> detail;
+    private List<? extends Parcelable> detail;
     private int page = -1;
     private int totalPages = -1;
 
@@ -38,7 +39,7 @@ public class ParseResult {
         this.status = status;
     }
 
-    public ParseResult(@ParsingStatus int status, List<ContentValues> detail, ContentValues header,
+    public ParseResult(@ParsingStatus int status, List<? extends Parcelable> detail, ContentValues header,
             int page, int totalPages) {
         this.status = status;
         this.detail = detail;
@@ -51,7 +52,7 @@ public class ParseResult {
         return status;
     }
 
-    public List<ContentValues> getDetail() {
+    public List<? extends Parcelable> getDetail() {
         return detail;
     }
 

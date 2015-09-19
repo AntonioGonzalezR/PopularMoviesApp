@@ -5,6 +5,7 @@ import android.test.AndroidTestCase;
 
 /**
  * Created by Antonio on 15-08-23.
+ * Test movie contract
  */
 public class TestMovieContract extends AndroidTestCase {
 

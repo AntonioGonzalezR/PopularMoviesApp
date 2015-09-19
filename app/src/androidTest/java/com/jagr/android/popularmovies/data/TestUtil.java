@@ -17,6 +17,7 @@ import java.util.Set;
 
 /**
  * Created by Antonio on 15-08-22.
+ * Utility for using in test cases
  */
 public class TestUtil extends AndroidTestCase {
 
@@ -61,20 +62,25 @@ public class TestUtil extends AndroidTestCase {
     }
 
 
+
+
     static long insertMadMaxValues(Context context) {
         // insert our test records into the database
         MovieDBHelper dbHelper = new MovieDBHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues testValues = createMovieValues();
 
-        long locationRowId;
-        locationRowId = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, testValues);
+        long movieRowId;
+        movieRowId = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, testValues);
 
         // Verify we got a row back.
-        assertTrue("Error: Failure to insert North Pole Location Values", locationRowId != -1);
+        assertTrue("Error: Failure to insert Movie Values", movieRowId != -1);
 
-        return locationRowId;
+        db.close();
+        return movieRowId;
     }
+
+
 
     static void validateCursor(Cursor valueCursor, ContentValues expectedValues) {
 

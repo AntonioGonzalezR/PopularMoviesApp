@@ -5,7 +5,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
 
-import com.jagr.android.popularmovies.data.MovieContract;
+import com.jagr.android.popularmovies.data.model.Movie;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +40,8 @@ public class MovieDataParser implements DataParser {
     public ParseResult parse( Context context, String json ){
 
         ParseResult result = null;
-        ArrayList<ContentValues> movies = new ArrayList<ContentValues>();
+        ArrayList<Movie> movies = new ArrayList<Movie>();
+        Movie movieParcelable;
         int page =  -1;
         int totalPages = -1;
         try {
@@ -71,16 +73,11 @@ public class MovieDataParser implements DataParser {
                 popularity = movie.getDouble(OMI_POPULARITY);
                 voteAverage = movie.getDouble(OMI_VOTE_AVERAGE);
 
-                cv = new ContentValues();
-                cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, movieId);
-                cv.put(MovieContract.MovieEntry.COLUMN_ORIGINAL_TITLE, originalTitle);
-                cv.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, overview);
-                cv.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, releaseDate);
-                cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_POSTER, posterPath);
-                cv.put(MovieContract.MovieEntry.COLUMN_POPULARITY, popularity);
-                cv.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, voteAverage);
+                movieParcelable = new Movie(movie.getString(OMI_ORIGINAL_TITLE),movie.getString(OMI_POSTER_PATH),
+                        movie.getString(OMI_OVERVIEW), movie.getDouble(OMI_POPULARITY), movie.getString(OMI_RELEASE_DATE),
+                        movie.getDouble(OMI_VOTE_AVERAGE), movie.getLong(OMI_MOVIE_ID));
 
-                movies.add(cv);
+                movies.add(movieParcelable);
 
             }
         }catch(JSONException jex){
@@ -91,4 +88,5 @@ public class MovieDataParser implements DataParser {
 
         return result;
     }
+
 }

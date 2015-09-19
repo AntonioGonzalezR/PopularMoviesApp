@@ -10,7 +10,8 @@ import java.text.SimpleDateFormat;
 
 /**
  * Created by Antonio on 15-08-20.
- * Specify the layout of the cache database used by the app.
+ * Specify the database layout.
+ +
  */
 public class MovieContract {
 
@@ -23,7 +24,7 @@ public class MovieContract {
 
     public static final String PATH_MOVIE  =  "movie";
 
-    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+   private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     static final long DEFAULT_DATE = 0L;
 

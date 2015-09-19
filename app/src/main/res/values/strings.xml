@@ -2,7 +2,7 @@
     <string name="app_name">Popular Movies App</string>
     <string name="action_settings">Settings</string>
     <string name="movie_default_description">Movie</string>
-    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_detail">Popular Movies</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="movie_title_default_activity_detail">Movie Title</string>
 
@@ -11,9 +11,31 @@
     <string name="movie_vote_average_default_activity_detail">%1$.1f/10</string>
 
     <string name="detail_activity_movie_poster_cd">Pop Movies</string>
+    <string name="detail_activity_trailer_number">Trailer %d</string>
+    <string name="menu_share_movie_trailer">Share movie trailer</string>
+
+    <string name="detail_activity_saved_favorite">Movie saved to favorites</string>
+
+    <string name="detail_activity_removed_favorite">Movie removed from favorites</string>
+    <string name="chooser_title">Open this trailer via</string>
+
+    <string name="no_video_available">No trailers available</string>
+    <string name="no_review_available">Open this trailer via</string>
+
+    <string name="trailer_title">Trailers: </string>
+
+    <string name="review_title">Reviews: </string>
+    <string name="review_author_title">Review Header</string>
+    <string name="review_content_title">Review Content</string>
+
 
     <!-- key to access api>
     <string name="api_key" translatable = "false">place_your_key_here</string-->
     <string name="api_image_path" translatable = "false">w185</string>
+    <string name="api_base_url" translatable = "false">http://api.themoviedb.org/3/</string>
+    <string name="api_movies_url" translatable = "false">https://www.youtube.com/watch</string>
+
+
+    <string name="api_key" translatable = "false">bd66b80ab60570dbf270f4739879bd98</string>
 
 </resources>

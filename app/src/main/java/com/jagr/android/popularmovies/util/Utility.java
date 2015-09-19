@@ -1,16 +1,20 @@
 package com.jagr.android.popularmovies.util;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.GridView;
 
 import com.jagr.android.popularmovies.R;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by Antonio on 15-08-17.
@@ -19,6 +23,7 @@ public class Utility {
 
     private static final String LOG_TAG = Utility.class.getSimpleName();
     private static final SimpleDateFormat sf = new SimpleDateFormat("yyyy");
+    private static final SimpleDateFormat orgiginal_sf = new SimpleDateFormat("yyyy-MM-dd");
     private static final String URL_MOVIE_BASE  = "http://image.tmdb.org/t/p/";
 
     /**
@@ -46,8 +51,14 @@ public class Utility {
         return "http://image.tmdb.org/t/p/w185/";
     }
 
-    public static String getReleaseDate(long date){
-        return sf.format( new Date( date ) );
+    public static String getReleaseDate(String date){
+        String releaseDate = "1900";
+        try{
+            releaseDate = sf.format( orgiginal_sf.parse(date) );
+        }catch (ParseException pEx){
+            Log.e(LOG_TAG, pEx.getMessage(), pEx);
+        }
+        return releaseDate;
     }
 
     private static boolean isLandscape( Context c){
@@ -56,32 +67,39 @@ public class Utility {
     }
 
 
-
+    /**
+     *
+     * @param c
+     * @return
+     */
     public static GridView.LayoutParams getGridViewLayOutParams(Context c){
-        //Resources r = Resources.getSystem();
-        //DisplayMetrics metrics = c.getResources().getDisplayMetrics();
-        //int screenWidth = metrics.widthPixels / 2;
-        //int screenHeight = metrics.heightPixels / 2;
-        //Log.d(LOG_TAG, screenWidth + "");
-        //Log.d(LOG_TAG, screenHeight + "");
-        //px = dp * (dpi / 160)
-        //final float scale = r.getDisplayMetrics().density;
-        //float dp = 435/scale;
-        //float dp = c.getResources().getDimension( R.dimen.activity_movie_poster_height );
-        //int screenHeight = (int)(dp * scale);
-        //Log.d(LOG_TAG, "Scale " + scale);
-        //Log.d( LOG_TAG,"Generic size " + dp  );
-        //Log.d( LOG_TAG,"screenHeight " + screenHeight  );
-        //Log.d( LOG_TAG,"valueInPixels " + valueInPixels  );
-        //Log.d(LOG_TAG, "Landscape " + isLandscape( c ) );
-        /*if( !isLandscape( c ) )
-            return new GridView.LayoutParams( GridView.LayoutParams.MATCH_PARENT, 400 );
-        else*/
-            //return new GridView.LayoutParams( GridView.LayoutParams.MATCH_PARENT, screenHeight );
-
-        //Log.d( LOG_TAG, "dp LandScape: " + dp );
         int screenHeight = (int) c.getResources().getDimension(R.dimen.activity_movie_poster_height);
         return new GridView.LayoutParams( GridView.LayoutParams.MATCH_PARENT  , screenHeight );
     }
+
+
+    /**
+     * Save the last page downloaded by the app
+     * @param c - context from where the method was called
+     * @param page - last page downloaded
+     * @param totalPages - total number of pages in the API
+     */
+    public static void setCurrentPage(Context c, int page, int totalPages){
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(c).edit();
+
+        editor.putInt(c.getString(R.string.movies_page), page);
+        editor.putInt(c.getString(R.string.movies_total_pages), totalPages);
+        editor.commit();
+
+    }
+
+    public static Intent createSharedIntent( String sharedTrailer ) {
+        Intent sharedIntent = new Intent();
+        sharedIntent.setAction(Intent.ACTION_SEND);
+        sharedIntent.putExtra(Intent.EXTRA_TEXT, null != sharedTrailer ? sharedTrailer : "No Trailer Available");
+        sharedIntent.setType("text/plain");
+        return sharedIntent;
+    }
+
 
 }

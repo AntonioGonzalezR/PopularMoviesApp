@@ -17,14 +17,14 @@ public class TestUriMatcher extends AndroidTestCase {
     // content://com.example.android.sunshine.app/movie/#"
     private static final Uri TEST_MOVIE_WITH_ID = MovieContract.MovieEntry.buildMovieUri(TEST_MOVIE_ID);
 
-
     public void testUriMatcher() {
         UriMatcher testMatcher = MovieProvider.buildUriMatcher();
 
-        assertEquals("Error: The WEATHER URI was matched incorrectly.",
+        assertEquals("Error: The MOVIE URI was matched incorrectly.",
                 testMatcher.match(TEST_MOVIE_DIR), MovieProvider.MOVIE);
-        assertEquals("Error: The WEATHER WITH LOCATION URI was matched incorrectly.",
+        assertEquals("Error: The MOVIE WITH ID URI was matched incorrectly.",
                 testMatcher.match(TEST_MOVIE_WITH_ID), MovieProvider.MOVIE_WITH_ID);
+
     }
 
 

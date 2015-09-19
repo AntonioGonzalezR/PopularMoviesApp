@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.jagr.android.popularmovies.data.MovieContract.MovieEntry;
 
+
 /**
  * Created by Antonio on 15-08-21.
  * SQLiteOpenHelper implementation to manage the movie db creation
@@ -26,9 +27,9 @@ public class MovieDBHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_MOVIE_TABLE =  "CREATE TABLE " + MovieEntry.TABLE_NAME + " ( " +
                 MovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 MovieEntry.COLUMN_MOVIE_ID + " INTEGER UNIQUE NOT NULL," +
-                MovieEntry.COLUMN_MOVIE_POSTER + " TEXT NOT NULL, " +
+                MovieEntry.COLUMN_MOVIE_POSTER + " TEXT, " +
                 MovieEntry.COLUMN_ORIGINAL_TITLE + " TEXT NOT NULL, " +
-                MovieEntry.COLUMN_OVERVIEW + " TEXT NOT NULL, " +
+                MovieEntry.COLUMN_OVERVIEW + " TEXT , " +
                 MovieEntry.COLUMN_VOTE_AVERAGE + " REAL NOT NULL, " +
                 MovieEntry.COLUMN_POPULARITY + " REAL NOT NULL, " +
                 MovieEntry.COLUMN_RELEASE_DATE + " INTEGER NOT NULL, " +
@@ -37,6 +38,9 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 
         db.execSQL( SQL_CREATE_MOVIE_TABLE );
     }
+
+
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

@@ -15,6 +15,7 @@ import com.jagr.android.popularmovies.data.MovieContract.MovieEntry;
 
 /**
  * Created by Antonio on 15-08-23.
+ * Test  movieProvider
  */
 public class TestProvider extends AndroidTestCase {
 
@@ -67,11 +68,10 @@ public class TestProvider extends AndroidTestCase {
         ContentValues testValues = TestUtil.createMovieValues();
         long movieRowId = db.insert(MovieEntry.TABLE_NAME, null, testValues);
 
-
-
         assertTrue("Unable to Insert MovieEntry into the Database", movieRowId != -1);
-
         db.close();
+
+
 
         // Test the basic content provider query
         Cursor movieCursor = mContext.getContentResolver().query(
@@ -84,6 +84,7 @@ public class TestProvider extends AndroidTestCase {
 
         // Make sure we get the correct cursor out of the database
         TestUtil.validateCursor("testMovieQuery", movieCursor, testValues);
+
     }
 
     public void testBasicWeatherQuery() {
@@ -103,6 +104,8 @@ public class TestProvider extends AndroidTestCase {
         TestUtil.validateCursor("testBasicWeatherQuery", movieCursor, testValues);
     }
 
+
+
     public void testInsertReadProvider() {
 
         ContentValues testValues = TestUtil.createMovieValues();
@@ -110,16 +113,20 @@ public class TestProvider extends AndroidTestCase {
         // Register a content observer for our insert.  This time, directly with the content resolver
         TestUtil.TestContentObserver tco = TestUtil.getTestContentObserver();
         mContext.getContentResolver().registerContentObserver(MovieEntry.CONTENT_URI, true, tco);
-        Uri locationUri = mContext.getContentResolver().insert(MovieEntry.CONTENT_URI, testValues);
+        Uri movieUri = mContext.getContentResolver().insert(MovieEntry.CONTENT_URI, testValues);
+
 
 
         tco.waitForNotificationOrFail();
         mContext.getContentResolver().unregisterContentObserver(tco);
 
-        long locationRowId = ContentUris.parseId(locationUri);
+        long movieRowId = ContentUris.parseId(movieUri);
+
 
         // Verify we got a row back.
-        assertTrue(locationRowId != -1);
+        assertTrue(movieRowId != -1);
+
+
 
         Cursor cursor = mContext.getContentResolver().query(
                 MovieEntry.CONTENT_URI,
@@ -131,6 +138,10 @@ public class TestProvider extends AndroidTestCase {
 
         TestUtil.validateCursor("testInsertReadProvider. Error validating MovieEntry.",
                 cursor, testValues);
+
+
+
+
 
     }
 
@@ -178,6 +189,13 @@ public class TestProvider extends AndroidTestCase {
 
         cursor.close();
 
+        /***********/
+
+
+        assertEquals("Error: Records not deleted from Movie table during delete", 0, cursor.getCount());
+
+        cursor.close();
+
     }
 
     public void deleteAllRecords() {
@@ -188,7 +206,7 @@ public class TestProvider extends AndroidTestCase {
        This test uses the provider to insert and then update the data. Uncomment this test to
        see if your update location is functioning correctly.
     */
-    public void testUpdateLocation() {
+    public void testUpdateMovie() {
         // Create a new map of values, where column names are the keys
         ContentValues values = TestUtil.createMovieValues();
 
