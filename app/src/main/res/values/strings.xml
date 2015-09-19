@@ -35,7 +35,4 @@
     <string name="api_base_url" translatable = "false">http://api.themoviedb.org/3/</string>
     <string name="api_movies_url" translatable = "false">https://www.youtube.com/watch</string>
 
-
-    <string name="api_key" translatable = "false">bd66b80ab60570dbf270f4739879bd98</string>
-
 </resources>
